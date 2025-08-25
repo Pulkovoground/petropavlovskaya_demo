@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>AR: Петропавловская крепость (Demo)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- AR.js for A-Frame (uses marker-based AR). -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="js/script.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; font-family: Arial, Helvetica, sans-serif; }
+      #ui {
+        position: absolute; top: 12px; left: 12px;
+        background: rgba(0,0,0,0.55); color: #fff;
+        padding: 10px; border-radius: 8px; max-width: 280px;
+        z-index: 5;
+      }
+      #ui h3 { margin: 0 0 6px 0; font-size: 16px; }
+      #ui p { margin: 0 0 8px 0; font-size: 13px; line-height:1.2; }
+      .btn {
+        display:inline-block; margin:4px 6px 0 0; padding:8px 10px;
+        background:#ffcc00; color:#000; font-weight:700; border-radius:6px; border: none;
+        cursor:pointer;
+      }
+      #notice { position: absolute; bottom: 12px; left:12px; color:#fff; background:rgba(0,0,0,0.35); padding:6px 10px; border-radius:6px; font-size:12px; }
+    </style>
+  </head>
+  <body>
+    <div id="ui">
+      <h3>1703 — Основание города</h3>
+      <p>Наведи камеру на маркер Hiro (ссылка в README) — увидишь строительство бастиона и силуэт Петра I.</p>
+      <button class="btn" onclick="playSpeech()">Слушать Петра I</button>
+      <button class="btn" onclick="raiseFlag()">Поднять флаг</button>
+      <button class="btn" onclick="startPuzzle()">Собрать бастион</button>
+    </div>
+
+    <div id="notice">Если AR не запускается — открой страницу в мобильном браузере с поддержкой камеры и разреши доступ.</div>
+
+    <!-- A-Frame scene with AR.js marker. Using public hiro pattern hosted online for convenience.
+         If you prefer local offline use, see markers/README how to download the pattern file. -->
+    <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false;'>
+      <a-marker type="pattern" url="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/marker-training/examples/pattern-files/patt.hiro">
+        <!-- Bastion placeholder (low-poly style using primitives) -->
+        <a-entity id="bastion" position="0 0 0">
+          <!-- Base -->
+          <a-box id="bastion-base" position="0 0.1 0" depth="0.6" width="1.0" height="0.2" material="color:#7a5c3a"></a-box>
+          <!-- Walls -->
+          <a-box position="0 0.5 -0.25" depth="0.1" width="1.0" height="0.6" material="color:#a67c52"></a-box>
+          <a-box position="0 0.5 0.25" depth="0.1" width="1.0" height="0.6" material="color:#a67c52"></a-box>
+          <a-cone position="-0.45 0.8 0" radius-bottom="0.08" height="0.6" rotation="0 0 0" material="color:#6b4f3b"></a-cone>
+          <a-cone position="0.45 0.8 0" radius-bottom="0.08" height="0.6" rotation="0 0 0" material="color:#6b4f3b"></a-cone>
+        </a-entity>
+
+        <!-- Peter silhouette (simple plane with texture could be used; we use a tall cylinder as placeholder) -->
+        <a-cylinder id="peter" position="0.6 0.5 0" radius="0.08" height="1.2" material="color:#2b3640;opacity:0.85"></a-cylinder>
+
+        <!-- Flag (initially hidden) -->
+        <a-entity id="flag" visible="false" position="-0.7 0.7 0" rotation="0 0 0">
+          <a-plane id="flag-cloth" width="0.4" height="0.25" material="color:#d62828; shader: flat"></a-plane>
+          <a-cylinder position="-0.2 -0.05 0" radius="0.02" height="0.8" rotation="0 0 0" material="color:#4b4b4b"></a-cylinder>
+        </a-entity>
+
+        <!-- Simple indicator for puzzle pieces -->
+        <a-box id="puzzlePiece" position="0 0.15 -0.8" depth="0.1" width="0.2" height="0.12" material="color:#f4a261" visible="false"></a-box>
+
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
